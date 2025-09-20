@@ -53,8 +53,43 @@ function blastHearts() {
     }, 1300);
   }
 }
-
 window.addEventListener('load', blastHearts);
+
+// Heart Cursor Trail
+document.addEventListener('mousemove', function(e) {
+    const heart = document.createElement('div');
+    heart.className = 'cursor-heart';
+    heart.innerHTML = '💖';
+    document.body.appendChild(heart);
+
+    heart.style.left = e.pageX + 'px';
+    heart.style.top = e.pageY + 'px';
+
+    setTimeout(() => {
+        heart.remove();
+    }, 1000);
+});
+
+// Fade-in animation on scroll
+const fadeInElements = document.querySelectorAll('.fade-in-element');
+const observerOptions = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0.2
+};
+
+const observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, observerOptions);
+
+fadeInElements.forEach(el => {
+  observer.observe(el);
+});
 
 // Smooth scroll for anchor links
 const links = document.querySelectorAll('a[href^="#"]');
